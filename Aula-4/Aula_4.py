@@ -37,29 +37,42 @@ sns.scatterplot(x="horas_esperadas", y="preco", data=dados)
 
 ## sns.scatterplot(x="horas_esperadas", y="preco", hue="finalizado", data=dados)
 
-sns.relplot(x="horas_esperadas", y="preco", hue="finalizado", col="finalizado", data=dados)
+#sns.relplot(x="horas_esperadas", y="preco", hue="finalizado", col="finalizado", data=dados)
 
 x = dados[['horas_esperadas', 'preco']]
 y = dados['finalizado']
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+
+SEED = 5
+
+
+
 from sklearn.svm import LinearSVC
 
-SEED = 20
 
+from sklearn.svm import SVC
+
+SEED = 5
+
+np.random.seed(SEED)
 treino_x, teste_x, treino_y, teste_y = train_test_split(x, y,
                                                          random_state = SEED, test_size = 0.25,
                                                          stratify = y)
+
+                                                         
 print("Treinaremos com %d elementos e testaremos com %d elementos" % (len(treino_x), len(teste_x)))
 
 
 
-modelo = LinearSVC()
+#modelo = LinearSVC()
+modelo = SVC()
 modelo.fit(treino_x, treino_y)
 previsoes = modelo.predict(teste_x)
 
 acuracia = accuracy_score(teste_y, previsoes) * 100
+
 print("A acurácia foi %.2f%%" % acuracia)
 
 previsoes_de_base = np.ones(540)
